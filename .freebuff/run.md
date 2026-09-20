@@ -42,6 +42,18 @@ npm install
 npm run dev
 ```
 
+## Detach recipes (Windows)
+
+**Backend:**
+```
+Start-Process -FilePath 'C:\Users\palak\OneDrive\Documents\major_project1\backend\venv\Scripts\python.exe' -ArgumentList '-m','uvicorn','app.main:app','--host','127.0.0.1','--port','5000' -WorkingDirectory 'C:\Users\palak\OneDrive\Documents\major_project1\backend' -RedirectStandardOutput '<log>' -RedirectStandardError '<log>.err' -WindowStyle Hidden
+```
+
+**Frontend:**
+```
+Start-Process -FilePath 'npm.cmd' -ArgumentList 'run','dev' -WorkingDirectory 'C:\Users\palak\OneDrive\Documents\major_project1\frontend' -RedirectStandardOutput '<log>' -RedirectStandardError '<log>.err' -WindowStyle Hidden
+```
+
 **Login:** admin@customerintelligence.com / admin123
 **API Docs:** http://127.0.0.1:5000/api/docs
 **Frontend:** http://localhost:5173
@@ -52,3 +64,8 @@ npm run dev
 - GET /api/customers → paginated customer list
 - GET /api/segmentation/summary → 4 segment stats
 - POST /api/churn/predict → XGBoost prediction (58% risk)
+
+## Preview
+- URL: http://localhost:5173
+- Frontend PID tracked via netstat on port 5173
+- Backend on port 5000 must be running for data to load
