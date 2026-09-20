@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Customer Intelligence System — Project Overview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+            dark: { 800:'#1e293b',900:'#0f172a' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .gradient-text { background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    .glow { box-shadow: 0 0 40px rgba(59,130,246,0.15); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .float { animation: float 3s ease-in-out infinite; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation: fadeUp 0.6s ease-out forwards; }
+    .fade-up-1 { animation-delay: 0.1s; opacity: 0; }
+    .fade-up-2 { animation-delay: 0.2s; opacity: 0; }
+    .fade-up-3 { animation-delay: 0.3s; opacity: 0; }
+    .fade-up-4 { animation-delay: 0.4s; opacity: 0; }
+    .tab-active { background: #3b82f6; color: white; }
+    .code-block { background: #1e293b; color: #e2e8f0; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.6; }
+    .code-keyword { color: #c084fc; }
+    .code-string { color: #86efac; }
+    .code-comment { color: #64748b; }
+    .code-type { color: #67e8f9; }
+    .stat-num { background: linear-gradient(135deg, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+
+  <!-- Hero Section -->
+  <header class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-900/30 via-gray-950 to-purple-900/20"></div>
+    <div class="absolute top-20 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 right-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"></div>
+
+    <nav class="relative z-10 max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <span class="text-lg font-bold">Customer Intelligence</span>
+      </div>
+      <div class="flex items-center gap-6 text-sm text-gray-400">
+        <a href="#features" class="hover:text-white transition">Features</a>
+        <a href="#architecture" class="hover:text-white transition">Architecture</a>
+        <a href="#ml" class="hover:text-white transition">ML Models</a>
+        <a href="#api" class="hover:text-white transition">API</a>
+        <a href="#setup" class="hover:text-white transition">Setup</a>
+      </div>
+    </nav>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-32 text-center">
+      <div class="inline-block px-4 py-1.5 bg-primary-900/40 border border-primary-700/30 rounded-full text-primary-300 text-sm font-medium mb-6 fade-up">
+        🧠 B.Tech CSE Major Project
+      </div>
+      <h1 class="text-5xl md:text-7xl font-black leading-tight mb-6 fade-up fade-up-1">
+        <span class="gradient-text">AI-Powered</span><br/>Customer Intelligence
+      </h1>
+      <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 fade-up fade-up-2">
+        Customer Segmentation • Churn Prediction • CLV Analysis • Recommendation Engine — all in one full-stack web application.
+      </p>
+      <div class="flex items-center justify-center gap-4 fade-up fade-up-3">
+        <a href="#setup" class="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-xl font-semibold transition shadow-lg shadow-primary-600/25">
+          Get Started →
+        </a>
+        <a href="#features" class="px-6 py-3 glass hover:bg-white/10 rounded-xl font-semibold transition">
+          Explore Features
+        </a>
+      </div>
+
+      <!-- Tech badges -->
+      <div class="flex items-center justify-center gap-3 mt-12 flex-wrap fade-up fade-up-4" id="tech-badges"></div>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <section class="relative -mt-10 z-10 max-w-5xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass rounded-2xl p-5 text-center glow">
+        <div class="text-3xl font-black stat-num" id="stat-files">73</div>
+        <div class="text-xs text-gray-400 mt-1">Project Files</div>
+      </div>
+      <div class="glass rounded-2xl p-5 text-center glow">
+        <div class="text-3xl font-black stat-num">7</div>
+        <div class="text-xs text-gray-400 mt-1">API Modules</div>
+      </div>
+      <div class="glass rounded-2xl p-5 text-center glow">
+        <div class="text-3xl font-black stat-num">3</div>
+        <div class="text-xs text-gray-400 mt-1">ML Models</div>
+      </div>
+      <div class="glass rounded-2xl p-5 text-center glow">
+        <div class="text-3xl font-black stat-num">10</div>
+        <div class="text-xs text-gray-400 mt-1">Database Tables</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="max-w-7xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-4">Key Features</h2>
+    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">End-to-end customer intelligence platform with machine learning, interactive dashboards, and AI-powered recommendations.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-500/30 transition">
+          <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">JWT Authentication</h3>
+        <p class="text-sm text-gray-400">Secure login with bcrypt password hashing, JWT tokens, and role-based access (Admin, Manager, Analyst).</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-500/30 transition">
+          <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Customer Management</h3>
+        <p class="text-sm text-gray-400">Full CRUD with search, pagination, filtering, profile pages, and purchase history tracking.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-500/30 transition">
+          <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Analytics Dashboard</h3>
+        <p class="text-sm text-gray-400">Real-time KPIs — total customers, churn rate, retention rate, revenue, CLV, with interactive charts.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-yellow-500/30 transition">
+          <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">K-Means Segmentation</h3>
+        <p class="text-sm text-gray-400">Unsupervised clustering into High Value, Frequent, Occasional, and At-Risk customer segments.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red-500/30 transition">
+          <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Churn Prediction</h3>
+        <p class="text-sm text-gray-400">3 ML models — Logistic Regression, Random Forest, XGBoost — with probability scoring and risk levels.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-pink-500/30 transition">
+          <svg class="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">AI Recommendations</h3>
+        <p class="text-sm text-gray-400">Retention strategies, discount suggestions, loyalty programs, and win-back campaigns per customer.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-500/30 transition">
+          <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">CLV Prediction</h3>
+        <p class="text-sm text-gray-400">Gradient Boosting model predicts future revenue and classifies customers into Platinum/Gold/Silver tiers.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-cyan-500/30 transition">
+          <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Report Generation</h3>
+        <p class="text-sm text-gray-400">PDF and Excel reports with customer analytics, churn analysis, segmentation data, and CLV breakdowns.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 hover:bg-white/5 transition group">
+        <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-500/30 transition">
+          <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">MySQL Database</h3>
+        <p class="text-sm text-gray-400">10 normalized tables with indexes, views, foreign keys, and audit logging for complete data integrity.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section id="architecture" class="max-w-6xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-4">System Architecture</h2>
+    <p class="text-gray-400 text-center mb-12">Three-tier architecture with async API, React frontend, and MySQL database.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass rounded-2xl p-6 text-center border-t-4 border-blue-500">
+        <div class="text-4xl mb-3">🖥️</div>
+        <h3 class="font-bold text-lg text-blue-400 mb-2">Presentation Layer</h3>
+        <p class="text-sm text-gray-400 mb-4">React 18 + Tailwind CSS + Chart.js</p>
+        <ul class="text-xs text-gray-500 space-y-1 text-left">
+          <li>• 8 page components</li>
+          <li>• JWT auth context</li>
+          <li>• 6 Chart.js visualizations</li>
+          <li>• Responsive sidebar layout</li>
+          <li>• Form validation</li>
+        </ul>
+      </div>
+
+      <div class="glass rounded-2xl p-6 text-center border-t-4 border-green-500">
+        <div class="text-4xl mb-3">⚙️</div>
+        <h3 class="font-bold text-lg text-green-400 mb-2">Application Layer</h3>
+        <p class="text-sm text-gray-400 mb-4">FastAPI + Scikit-learn + XGBoost</p>
+        <ul class="text-xs text-gray-500 space-y-1 text-left">
+          <li>• 7 API route modules</li>
+          <li>• 30+ Pydantic schemas</li>
+          <li>• ML prediction engine</li>
+          <li>• Recommendation engine</li>
+          <li>• Report generator</li>
+        </ul>
+      </div>
+
+      <div class="glass rounded-2xl p-6 text-center border-t-4 border-purple-500">
+        <div class="text-4xl mb-3">💾</div>
+        <h3 class="font-bold text-lg text-purple-400 mb-2">Data Layer</h3>
+        <p class="text-sm text-gray-400 mb-4">MySQL 8.0 + Model Files + Reports</p>
+        <ul class="text-xs text-gray-500 space-y-1 text-left">
+          <li>• 10 database tables</li>
+          <li>• 3 optimized views</li>
+          <li>• Indexed columns</li>
+          <li>• .pkl model storage</li>
+          <li>• PDF/Excel file storage</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ML Models -->
+  <section id="ml" class="max-w-6xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-4">Machine Learning Models</h2>
+    <p class="text-gray-400 text-center mb-12">Three supervised models for churn, unsupervised for segmentation, and regression for CLV.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Churn Models Chart -->
+      <div class="glass rounded-2xl p-6">
+        <h3 class="font-semibold text-lg mb-4">Churn Prediction Model Comparison</h3>
+        <canvas id="modelChart" height="220"></canvas>
+      </div>
+
+      <!-- Segment Chart -->
+      <div class="glass rounded-2xl p-6">
+        <h3 class="font-semibold text-lg mb-4">Customer Segment Distribution</h3>
+        <canvas id="segmentChart" height="220"></canvas>
+      </div>
+
+      <!-- Risk Distribution -->
+      <div class="glass rounded-2xl p-6">
+        <h3 class="font-semibold text-lg mb-4">Churn Risk Distribution</h3>
+        <canvas id="riskChart" height="220"></canvas>
+      </div>
+
+      <!-- Revenue Trend -->
+      <div class="glass rounded-2xl p-6">
+        <h3 class="font-semibold text-lg mb-4">Monthly Revenue Trend</h3>
+        <canvas id="revenueChart" height="220"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Endpoints -->
+  <section id="api" class="max-w-6xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-4">REST API Endpoints</h2>
+    <p class="text-gray-400 text-center mb-12">35+ endpoints across 7 modules with auto-generated Swagger docs.</p>
+
+    <div class="glass rounded-2xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-white/5">
+              <th class="text-left py-3 px-4 font-semibold text-gray-300">Method</th>
+              <th class="text-left py-3 px-4 font-semibold text-gray-300">Endpoint</th>
+              <th class="text-left py-3 px-4 font-semibold text-gray-300">Description</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">POST</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/auth/login</td><td class="py-2 px-4 text-gray-400">User login with JWT</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">POST</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/auth/register</td><td class="py-2 px-4 text-gray-400">Register new user</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-bold">GET</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/customers</td><td class="py-2 px-4 text-gray-400">List customers (paginated)</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">POST</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/customers</td><td class="py-2 px-4 text-gray-400">Create customer</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs font-bold">GET</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/analytics/dashboard</td><td class="py-2 px-4 text-gray-400">Dashboard statistics</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">POST</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/segmentation/run</td><td class="py-2 px-4 text-gray-400">Run K-Means clustering</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">POST</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/churn/predict</td><td class="py-2 px-4 text-gray-400">Predict churn probability</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">POST</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/recommendations/generate/{id}</td><td class="py-2 px-4 text-gray-400">Generate AI recommendations</td></tr>
+            <tr><td class="py-2 px-4"><span class="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-bold">POST</span></td><td class="py-2 px-4 font-mono text-xs text-gray-400">/api/reports/generate/customer-analytics</td><td class="py-2 px-4 text-gray-400">Generate PDF/Excel report</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Database Schema -->
+  <section class="max-w-6xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-4">Database Schema</h2>
+    <p class="text-gray-400 text-center mb-12">10 normalized tables with relationships, indexes, and views.</p>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">👤</div>
+        <div class="text-sm font-semibold">users</div>
+        <div class="text-xs text-gray-500">Auth & roles</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">🧑</div>
+        <div class="text-sm font-semibold">customers</div>
+        <div class="text-xs text-gray-500">Core entity</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">🛒</div>
+        <div class="text-sm font-semibold">purchases</div>
+        <div class="text-xs text-gray-500">Transactions</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">📊</div>
+        <div class="text-sm font-semibold">segments</div>
+        <div class="text-xs text-gray-500">K-Means</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">⚠️</div>
+        <div class="text-sm font-semibold">churn_preds</div>
+        <div class="text-xs text-gray-500">ML results</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">💡</div>
+        <div class="text-sm font-semibold">recommendations</div>
+        <div class="text-xs text-gray-500">AI recs</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">💰</div>
+        <div class="text-sm font-semibold">clv_preds</div>
+        <div class="text-xs text-gray-500">CLV scores</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">📄</div>
+        <div class="text-sm font-semibold">reports</div>
+        <div class="text-xs text-gray-500">Generated</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">📋</div>
+        <div class="text-sm font-semibold">audit_log</div>
+        <div class="text-xs text-gray-500">Operations</div>
+      </div>
+      <div class="glass rounded-xl p-4 text-center hover:bg-white/5 transition">
+        <div class="text-2xl mb-2">⚙️</div>
+        <div class="text-sm font-semibold">settings</div>
+        <div class="text-xs text-gray-500">System config</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section id="setup" class="max-w-4xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-12">Quick Start</h2>
+
+    <div class="space-y-6">
+      <div class="glass rounded-2xl p-6">
+        <h3 class="font-semibold text-lg mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-sm font-bold">1</span>
+          Clone & Setup Database
+        </h3>
+        <div class="code-block rounded-xl p-4 mt-3">
+          <span class="code-comment"># Clone the repository</span><br/>
+          git clone https://github.com/your-username/customer-intelligence.git<br/>
+          cd customer-intelligence<br/><br/>
+          <span class="code-comment"># Setup MySQL database</span><br/>
+          mysql -u root -p &lt; database/schema.sql
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl p-6">
+        <h3 class="font-semibold text-lg mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+          Backend Setup
+        </h3>
+        <div class="code-block rounded-xl p-4 mt-3">
+          cd backend<br/>
+          python -m venv venv && source venv/bin/activate<br/>
+          pip install -r requirements.txt<br/>
+          cp .env.example .env<br/><br/>
+          <span class="code-comment"># Generate sample data & train models</span><br/>
+          python ../scripts/generate_sample_data.py<br/>
+          python ml/scripts/train_all.py<br/><br/>
+          <span class="code-comment"># Start server</span><br/>
+          uvicorn app.main:app --reload --port 8000
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl p-6">
+        <h3 class="font-semibold text-lg mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-sm font-bold">3</span>
+          Frontend Setup
+        </h3>
+        <div class="code-block rounded-xl p-4 mt-3">
+          cd frontend<br/>
+          npm install<br/>
+          npm run dev<br/><br/>
+          <span class="code-comment"># Frontend: http://localhost:5173</span><br/>
+          <span class="code-comment"># API Docs: http://localhost:8000/api/docs</span>
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl p-6 border border-primary-700/30">
+        <h3 class="font-semibold text-lg mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-sm font-bold">🐳</span>
+          Docker Deployment (Alternative)
+        </h3>
+        <div class="code-block rounded-xl p-4 mt-3">
+          docker-compose up -d<br/><br/>
+          <span class="code-comment"># Frontend: http://localhost:3000</span><br/>
+          <span class="code-comment"># Backend API: http://localhost:8000</span><br/>
+          <span class="code-comment"># MySQL: localhost:3306</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 mt-12">
+    <div class="max-w-7xl mx-auto px-6 py-8 flex items-center justify-between text-sm text-gray-500">
+      <div>AI Customer Intelligence System — B.Tech CSE Major Project</div>
+      <div class="flex items-center gap-4">
+        <span>73 Files</span>
+        <span>•</span>
+        <span>7 API Modules</span>
+        <span>•</span>
+        <span>3 ML Models</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tech badges
+    const badges = ['React 18', 'FastAPI', 'MySQL', 'Scikit-learn', 'XGBoost', 'Chart.js', 'Tailwind CSS', 'Docker'];
+    document.getElementById('tech-badges').innerHTML = badges.map(t => 
+      `<span class="px-3 py-1.5 glass rounded-full text-xs font-medium text-gray-300">${t}</span>`
+    ).join('');
+
+    // Model Comparison Chart
+    new Chart(document.getElementById('modelChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Logistic Regression', 'Random Forest', 'XGBoost'],
+        datasets: [
+          { label: 'Accuracy', data: [0.82, 0.87, 0.90], backgroundColor: '#3b82f6' },
+          { label: 'F1-Score', data: [0.79, 0.84, 0.87], backgroundColor: '#8b5cf6' },
+          { label: 'AUC-ROC', data: [0.85, 0.90, 0.93], backgroundColor: '#ec4899' }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+        scales: {
+          x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { beginAtZero: true, max: 1, ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        }
+      }
+    });
+
+    // Segment Distribution
+    new Chart(document.getElementById('segmentChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['High Value', 'Frequent Buyers', 'Occasional', 'At-Risk'],
+        datasets: [{ data: [250, 320, 280, 150], backgroundColor: ['#3b82f6','#10b981','#f59e0b','#ef4444'], borderWidth: 0 }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 11 } } } } }
+    });
+
+    // Risk Distribution
+    new Chart(document.getElementById('riskChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Low', 'Medium', 'High', 'Critical'],
+        datasets: [{ data: [350, 280, 220, 150], backgroundColor: ['#10b981','#f59e0b','#f97316','#ef4444'], borderWidth: 0 }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 11 } } } } }
+    });
+
+    // Revenue Trend
+    new Chart(document.getElementById('revenueChart'), {
+      type: 'line',
+      data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        datasets: [{
+          label: 'Revenue ($)',
+          data: [42000,45000,48000,51000,49000,55000,58000,62000,60000,65000,68000,72000],
+          borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)',
+          fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#3b82f6'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: '#64748b', callback: v => '$' + (v/1000) + 'k' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

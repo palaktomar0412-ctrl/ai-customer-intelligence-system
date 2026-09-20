@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: ci-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: customer_intelligence
+      MYSQL_USER: ci_user
+      MYSQL_PASSWORD: ci_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: ci-backend
+    restart: always
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=ci_user
+      - DB_PASSWORD=ci_password
+      - DB_NAME=customer_intelligence
+      - JWT_SECRET_KEY=your-production-secret-key-here
+      - ENVIRONMENT=production
+      - DEBUG=false
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+      - ./sample_data:/app/sample_data
+
+  # React Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: ci-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

@@ -1,0 +1,40 @@
+# ============================================================================
+# AI Customer Intelligence System - Python Backend Dependencies
+# Compatible with Python 3.11, 3.12, 3.13
+# ============================================================================
+
+# Web Framework
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.18
+
+# Database
+sqlalchemy==2.0.36
+aiosqlite==0.20.0
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+
+# Validation & Settings
+pydantic==2.10.3
+pydantic-settings==2.7.0
+
+# Machine Learning
+scikit-learn==1.6.0
+xgboost==2.1.3
+numpy==2.2.0
+pandas==2.2.3
+joblib==1.4.2
+
+# Data Visualization (for report generation)
+matplotlib==3.10.0
+seaborn==0.13.2
+
+# Report Generation
+fpdf2==2.8.1
+openpyxl==3.1.5
+
+# Environment & Utilities
+python-dotenv==1.0.1
