@@ -1,3 +1,4 @@
+
 # 🧠 AI-Powered Customer Intelligence, Segmentation and Churn Prediction System
 
 > **A Full-Stack Web Application Using Machine Learning for Customer Analytics**
@@ -508,3 +509,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - React and Tailwind CSS for the frontend
 - Chart.js for data visualization
 - The open-source community for invaluable tools and libraries
+
