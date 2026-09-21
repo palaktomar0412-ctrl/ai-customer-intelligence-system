@@ -18,7 +18,7 @@ Deploy the **whole project** (React UI + FastAPI API + SQLite DB + ML models) as
 └─────────────────────────────────────────────┘
 ```
 
-The `Dockerfile.web` build does three things:
+The root `Dockerfile` (identical copy: `Dockerfile.web`) does three things:
 1. `npm run build` → compiles the React frontend
 2. `python seed.py` → creates the SQLite DB, seeds 1,000 customers, trains all ML models
 3. Serves everything with one uvicorn process (`SERVE_FRONTEND=true`)
@@ -29,12 +29,24 @@ Login: `admin@customerintelligence.com` / `admin123`
 
 ## Option 1 — Render (recommended, easiest)
 
-The repo ships a ready `render.yaml` blueprint.
-
 1. Push this repo to GitHub (already at `github.com/palaktomar0412-ctrl/ai-customer-intelligence-system`).
-2. Go to [dashboard.render.com](https://dashboard.render.com) → **New +** → **Blueprint** → select the repo.
-3. Render reads `render.yaml` and creates the service. First build takes ~5–10 min (installs deps, trains models).
-4. Your app goes live at `https://customer-intelligence.onrender.com` (or the URL Render assigns).
+2. Go to [dashboard.render.com](https://dashboard.render.com) → **New +** → **Web Service** → select the repo.
+3. Configure:
+   - **Language:** `Docker` ← not Python 3
+   - **Dockerfile path:** `./Dockerfile` (the default works — no override needed)
+   - **Instance Type:** Free
+4. Under **Advanced → Environment Variables**, add:
+   ```
+   JWT_SECRET_KEY = <any long random hex string>
+   SERVE_FRONTEND = true
+   FRONTEND_DIST  = /app/frontend/dist
+   ENVIRONMENT    = production
+   DEBUG          = false
+   ```
+5. Click **Deploy Web Service**. First build takes ~8–15 min (installs deps, trains models).
+6. Your app goes live at the URL Render assigns (e.g. `https://customer-intelligence.onrender.com`).
+
+> A `render.yaml` blueprint is also included for Blueprint-based deploys if you prefer that flow.
 
 > **Important:** in the Render dashboard, update the `ALLOWED_ORIGINS` env var to match your actual onrender.com URL if it differs from the one in `render.yaml`. (Same-origin requests don't need CORS, so in most cases you can leave it as is.)
 
@@ -48,7 +60,7 @@ The repo ships a ready `render.yaml` blueprint.
 
 1. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**.
 2. In the service settings, set:
-   - **Dockerfile path:** `Dockerfile.web`
+   - **Dockerfile path:** `Dockerfile` (repo root — default)
    - Env vars: `JWT_SECRET_KEY` (generate), `SERVE_FRONTEND=true`, `FRONTEND_DIST=/app/frontend/dist`, `ENVIRONMENT=production`, `DEBUG=false`
 3. Under **Settings → Networking → Generate Domain**, expose port `8000`.
 
@@ -66,7 +78,7 @@ sudo usermod -aG docker $USER && newgrp docker
 git clone https://github.com/palaktomar0412-ctrl/ai-customer-intelligence-system.git
 cd ai-customer-intelligence-system
 
-docker build -f Dockerfile.web -t ci-web .
+docker build -t ci-web .
 docker run -d --name ci-web --restart always \
   -p 80:8000 \
   -e JWT_SECRET_KEY="$(openssl rand -hex 32)" \

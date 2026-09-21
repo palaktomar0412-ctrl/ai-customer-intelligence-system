@@ -2,7 +2,7 @@
 # Single-service production image (UI + API + SQLite + ML models in one box)
 # Used for Render / Railway / Fly.io / any Docker-based PaaS.
 #
-# Build:  docker build -f Dockerfile.web -t ci-web .   (root Dockerfile is an identical copy)
+# Build:  docker build -t ci-web .   (root Dockerfile; Dockerfile.web is an identical copy)
 # Run:    docker run -p 8000:8000 -e JWT_SECRET_KEY=change-me ci-web
 # ============================================================================
 
