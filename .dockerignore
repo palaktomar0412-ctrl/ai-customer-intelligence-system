@@ -1,0 +1,20 @@
+# Keep the build context small and images reproducible
+**/__pycache__
+**/*.pyc
+**/.venv
+**/venv
+**/node_modules
+**/.git
+**/.freebuff
+
+# Large or generated artifacts not needed at runtime
+backend/backend
+backend/uploads
+backend/reports
+backend/*.db
+sample_data
+
+# Local env and editor noise
+.env
+.vscode
+.idea

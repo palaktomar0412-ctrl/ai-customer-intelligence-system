@@ -3,6 +3,7 @@ Application configuration settings loaded from environment variables.
 Uses SQLite by default — zero setup required.
 """
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 from typing import List
 import os
 
@@ -19,6 +20,10 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
     API_V1_PREFIX: str = "/api"
+
+    # Single-service deployment: serve the built React frontend from FastAPI
+    SERVE_FRONTEND: bool = False
+    FRONTEND_DIST: str = ""
 
     # Database - SQLite (default, no install needed)
     # Set DB_TYPE=mysql in .env to use MySQL instead
@@ -54,15 +59,22 @@ class Settings(BaseSettings):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    # CORS
+    # CORS (accepts comma-separated string from env or a list)
     ALLOWED_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://localhost:5173",
         "http://localhost:5174",
     ]
 
-    # ML Models
-    MODEL_DIR: str = "backend/ml/models"
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def _parse_origins(cls, v):
+        if isinstance(v, str):
+            return [o.strip() for o in v.split(",") if o.strip()]
+        return v
+
+    # ML Models (absolute path so it works regardless of the process cwd)
+    MODEL_DIR: str = os.path.join(BASE_DIR, "ml", "models")
     SEGMENTATION_MODEL: str = "kmeans_segmentation.pkl"
     CHURN_MODEL_RF: str = "churn_random_forest.pkl"
     CHURN_MODEL_XGB: str = "churn_xgboost.pkl"
